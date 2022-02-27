@@ -3,6 +3,7 @@ A key-based encryption application made in python
 
 ## Purpose
 This was made for a coding contest. It's meant to take input files/text and encode/decode them with key files.
+Byte files can also be encoded/decoded (PNG, EXE, JPG, etc)
 
 ## Usage instructions
 See the [wiki](https://github.com/rockedsocks/SuaveCryptor/wiki)
