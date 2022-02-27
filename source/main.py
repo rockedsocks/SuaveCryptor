@@ -67,20 +67,18 @@ class Ui(QtWidgets.QMainWindow):
 
     def encrypt(self, save):
         if save: # encrypting file
-            contents = filing.read(self.ef_filename.path)
-            if self.e_save_loc.text() != "" and self.e_custom_file_loc.isChecked():
+            if self.e_save_loc.text() != "" and self.e_custom_file_loc.isChecked(): # if theres a save location
                 save_path = self.e_save_loc.path + ".pwn"
             else:
-                save_path = self.ef_filename.path
-            if self.use_key.isChecked():
-                _, contents = work.encrypt(save_path, key=filing.read(self.key_loc.path))
+                save_path = self.ef_filename.path[:self.ef_filename.path.rfind(".")] + ".pwn"
+            if self.use_key.isChecked() and self.key_loc.path != "":
+                _, contents = work.encrypt(self.ef_filename.path, key=filing.read(self.key_loc.path), file=True)
             else:
-                key, contents = work.encrypt(save_path)
+                key, contents = work.encrypt(self.ef_filename.path, file=True)
+                filing.save(self.ek_location.path + ".key", key)
+            contents = contents.decode("utf-8")
             contents += self.ef_filename.path[self.ef_filename.path.rfind("."):]
-            filing.save(save_path, contents) # save encrypted file
-            contents += self.ef_filename.path[self.ef_filename.path.rfind("."):]
-            if not(self.use_key.isChecked()):
-                filing.save(self.ek_location.path + ".key", key) # save key to selected location
+            filing.save(save_path, contents)
             popup = QtWidgets.QMessageBox()
             popup.setIcon(popup.Information)
             popup.setText("Encryption Completed!")
@@ -109,13 +107,16 @@ class Ui(QtWidgets.QMainWindow):
 
     def decrypt(self, save):
         if save: # decrypt file if save is true
-            contents = filing.read(self.df_filename.path)
-            save_path = self.df_filename.path[:-4]
-            save_path += contents[contents.rfind("."):] # append suffix to save path
-            if self.d_custom_file_loc.isChecked() and self.d_save_loc.text() != "":
-                filing.save(self.d_save_loc.path + save_path[save_path.rfind("."):], work.decrypt(contents, filing.read(self.dk_location.path)))
+            suffix = filing.read(self.df_filename.path)[filing.read(self.df_filename.path).rfind("."):]
+            save_path = self.df_filename.path[:-4] + suffix
+            filing.save(self.df_filename.path, filing.read(self.df_filename.path)[:0 - len(suffix)])
+            if self.d_custom_file_loc.isChecked() and self.d_save_loc.path != "":
+                save_path = self.d_save_loc.path + filing.read(self.df_filename.path)[filing.read(self.df_filename.path).rfind("."):]
+            if self.d_custom_file_loc.isChecked() and self.d_save_loc.path != "":
+                filing.save(self.d_save_loc.path + save_path[save_path.rfind("."):], work.decrypt(filing.read(self.df_filename.path), filing.read(self.dk_location.path), file=True))
             else:
-                filing.save(save_path, work.decrypt(contents, filing.read(self.dk_location.path))) # save file
+                filing.save(save_path, work.decrypt(filing.read(self.df_filename.path), filing.read(self.dk_location.path), file=True))
+            filing.save(self.df_filename.path, filing.read(self.df_filename.path) + suffix)
             popup = QtWidgets.QMessageBox() # popup to notify task completion
             popup.setIcon(popup.Information)
             popup.setText("Decryption Completed!")
@@ -138,7 +139,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def key_buttons(self, func, button):
         func()
-        button.setEnabled(not(button.isEnabled()))
+        button.setEnabled(True)
 
 
 
