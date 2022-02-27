@@ -6,7 +6,8 @@ This was made for a coding contest. It's meant to take input files/text and enco
 Byte files can also be encoded/decoded (PNG, EXE, JPG, etc)
 
 ## Usage instructions
-See the [wiki](https://github.com/rockedsocks/SuaveCryptor/wiki)
+Run main.py with Python 3
+For more see the [wiki](https://github.com/rockedsocks/SuaveCryptor/wiki)
 
 ## Requirements
 Here are the pip packages required to run this:
