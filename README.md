@@ -1,5 +1,5 @@
 # SuaveCryptor
-A key-based encryption application made in python
+A key-based encryption application made in python.
 
 ### Note To Contest Coordinators
 Here's my [document](https://docs.google.com/document/d/1-DQ7SvZmsEzWEQORfxAdbvOeZctS5SPlMCtUKY-Bgd0/edit?usp=sharing) detailing some giccups I ran into during development.
@@ -10,6 +10,7 @@ Byte files can also be encoded/decoded (PNG, EXE, JPG, etc)
 
 ## Usage instructions
 Run main.py with Python 3.
+Untested in Windows, but should work fine. Works 100% with Mac and Linux.
 
 For more see the [wiki](https://github.com/rockedsocks/SuaveCryptor/wiki)
 
