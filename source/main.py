@@ -49,7 +49,7 @@ class Ui(QtWidgets.QMainWindow):
         self.d_text.clicked.connect(lambda: self.decrypt(False))
         self.show()
 
-    def choose_file(self, mode, types):
+    def choose_file(self, mode, types): # Default File Dialog (mode = save/open, types = file types)
         dialog = QtWidgets.QFileDialog()
         dialog.setFileMode(dialog.ExistingFile)
         if mode == "open":
@@ -107,15 +107,12 @@ class Ui(QtWidgets.QMainWindow):
 
     def decrypt(self, save):
         if save: # decrypt file if save is true
-            suffix = filing.read(self.df_filename.path)[filing.read(self.df_filename.path).rfind("."):]
-            save_path = self.df_filename.path[:-4] + suffix
-            filing.save(self.df_filename.path, filing.read(self.df_filename.path)[:0 - len(suffix)])
-            if self.d_custom_file_loc.isChecked() and self.d_save_loc.path != "":
-                save_path = self.d_save_loc.path + filing.read(self.df_filename.path)[filing.read(self.df_filename.path).rfind("."):]
-            if self.d_custom_file_loc.isChecked() and self.d_save_loc.path != "":
-                filing.save(self.d_save_loc.path + save_path[save_path.rfind("."):], work.decrypt(filing.read(self.df_filename.path), filing.read(self.dk_location.path), file=True))
-            else:
-                filing.save(save_path, work.decrypt(filing.read(self.df_filename.path), filing.read(self.dk_location.path), file=True))
+            suffix = filing.read(self.df_filename.path)[filing.read(self.df_filename.path).rfind("."):] # find file suffix
+            save_path = self.df_filename.path[:-4] + suffix # add suffix to save path
+            filing.save(self.df_filename.path, filing.read(self.df_filename.path)[:0 - len(suffix)]) # remove suffix from file
+            if self.d_custom_file_loc.isChecked() and self.d_save_loc.path != "": # if custom loc checked, save to custom location
+                save_path = self.d_save_loc.path + suffix
+            filing.save(save_path, work.decrypt(filing.read(self.df_filename.path), filing.read(self.dk_location.path), file=True)) # save file
             filing.save(self.df_filename.path, filing.read(self.df_filename.path) + suffix)
             popup = QtWidgets.QMessageBox() # popup to notify task completion
             popup.setIcon(popup.Information)
@@ -124,9 +121,9 @@ class Ui(QtWidgets.QMainWindow):
             popup.setDetailedText("Decrypted File saved to " + save_path)
             popup.setStandardButtons(popup.Ok)
             popup.exec_()
-        else:
+        else: # When text decryption
             inputs = self.findChild(QtWidgets.QTextBrowser, 'dt_input')
-            if inputs.toPlainText() == "":
+            if inputs.toPlainText() == "": # Send warning if fields are not filled
                 popup = QtWidgets.QMessageBox()
                 popup.setIcon(popup.Warning)
                 popup.setText("Fill in the input!")
