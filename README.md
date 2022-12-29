@@ -2,7 +2,7 @@
 A key-based encryption application made in python.
 
 ### Note To Contest Coordinators
-Here's my [document](https://docs.google.com/document/d/1-DQ7SvZmsEzWEQORfxAdbvOeZctS5SPlMCtUKY-Bgd0/edit?usp=sharing) detailing some giccups I ran into during development.
+Here's my [document](https://docs.google.com/document/d/1-DQ7SvZmsEzWEQORfxAdbvOeZctS5SPlMCtUKY-Bgd0/edit?usp=sharing) detailing some hiccups I ran into during development.
 
 ## Purpose
 This was made for a coding contest. It's meant to take input files/text and encode/decode them with key files.
